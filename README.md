@@ -249,18 +249,6 @@ Como se explico con anterioridad, a modo de  acotación: al momento de agregar u
    <image src="external_resources/images/cartProducts.jpg" alt="Descripción de la imagen">
 </p>
 
-$${\color{lightblue}Modal \space Crear \space Producto:}$$
-
-<p align="center">
-   <image src="external_resources/images/modal-add.jpg" alt="Descripción de la imagen">
-</p>
-
-$${\color{lightblue}Modal \space Eliminar \space Producto:}$$
-
-<p align="center">
-   <image src="external_resources/images/modal-delete.jpg" alt="Descripción de la imagen">
-</p>
-
 ## Mongodb
 
 Existe un archivo en la carpeta `src/config/db.js` el cual tiene la configuración a la conexión a la base de datos:
