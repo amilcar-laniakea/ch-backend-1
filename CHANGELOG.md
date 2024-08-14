@@ -2,6 +2,16 @@
 
 Cambios que se han realizado en el proyecto desde su commit inicial.
 
+## [0.2.0] MongoDB advanced features (14/07/24)
+
+-Implementación rutas/archivos con métodos tipo `static` que sirven de frontend y demostración a la funcionalidad de la aplicación.
+-Borrado todo rastro de implementación antigua de filesystem usada previamente.
+-Borrando todo rastro de websocket implementado en la entrega anterior.
+-Incorporado filtrados avanzados `sort, limit, page, category, status, stock, name, code` y paginacion en el proyectos en los servicios `/api/cart` y `/api/product`
+-Incorporado la funcionalidad `populate()` de mongoose en la respuesta de `/api/cart` 
+
+-------------------------------------------------------------------------------------------------------------------
+
 ## [0.1.0] MongoDB feature (14/07/24)
 
 -Implementación de MongoDB en los endpoints de la aplicación, tanto en productos como en carrito de compras.

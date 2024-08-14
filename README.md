@@ -2,13 +2,17 @@
 
 # coderhouse_ecommerce
 
-Primera entrega del proyecto final que tiene su foco en realizar un CRUD de productos y un CRUD para gestionar los carritos de compra
+Proyecto final de la primera parte del curso avanzado de backend en coderhouse.
+
+El proyecto se estructuro de forma que pudiera mostrar una modularidad fácilmente escalable a un proyecto que solo funcione desde el server side, por ahora hay secciones del proyecto que a manera ilustrativa funcionan como una especia de frontend y tienen como nombre `static` como palabra clave en la nomenclatura de archivos, las rutas de renderizado y los controladores especialmente elaborados para demostración, todo esto con el objetivo de que esas partes de la aplicación puedan sustraerse de forma sencilla y rápida en posteriores iteraciones de la segunda parte del curso.
+
+Proyecto hecho con conexión a una base de datos no-relacional basada en la arquitectura de mongoDB.
 
 ## Tabla de Contenidos
 1. [Instalación](#instalación)
 2. [Configuración](#configuración)
 3. [Uso](#uso)
-4. [Websocket Integración](#websocket)
+4. [MongoDB](#mongodb)
 5. [Uso de Handlebars](#handlebars)
 6. [Postman Collection](#postman)
 7. [Estructura del Proyecto](#estructura-del-proyecto)
@@ -22,21 +26,37 @@ Primera entrega del proyecto final que tiene su foco en realizar un CRUD de prod
 - Node.js v20.16.0
 
 ### Instrucciones de instalación
+   Repositorio publico : https://github.com/amilcar-laniakea/ch-backend-1.git
+
 1. Clonar el repositorio:
+   via HTTP:
    ```sh
    git clone https://github.com/amilcar-laniakea/ch-backend-final-proyect.git
+   ```
+   via SSH:
+   ```sh
+   git clone git@github.com:amilcar-laniakea/ch-backend-1.git
    ```
 
 ## Configuración
 ### Variables de entorno
+
+Las variables de entornos necesarias se encuentran a manera de guía en el archivo `.env.example`:
+
 `PORT`: El puerto se encuentra definido por default en el archivo principal del proyecto (app.js): 8080
+`MONGO_DB_URI`: La dirección en donde se encuentra la base de datos de mongoDB
+`DATABASE_NAME`: Nombre de la base de datos en mongoDB
+`APP_URL`: URL de la aplicación, generalmente usado en los archivos para frontend de condición estática: `static`, como se menciono anteriormente en el enunciado del proyecto.
+
+
 ### Package.json
 Contiene las siguientes librerías necesarias para los requerimientos necesarios del trabajo final:
 
 `express`: En su version 4.19.2.  
 `multer`: En su version 1.4.5.  
 `express-handlebars`: En su version 7.1.3  
-`socket.io`: En su version 4.7.5  
+`mongoose`: En su version ^8.5.1,
+`mongoose-paginate-v2`: En su version ^1.8.3,
 
 **Importante:** las versiones descritas con anterioridad fueron o son las usadas al momento de hacer el desarrollo del proyecto.
 
@@ -47,20 +67,56 @@ Contiene las siguientes librerías necesarias para los requerimientos necesarios
    ```
 Esto iniciara la aplicación en la dirección: [http://localhost:8080](http://localhost:8080/)
 
-### Carpeta de recursos estaticos:
-AL utilizar cada uno de los endpoints de la aplicación, se generan la carpeta y ruta correspondiente a los archivos necesarios:  
-`data/carts.json` o `data/products.json`  
-Si al invocar un endpoint la carpeta no existe y tampoco el archivo, por ejemplo, ver todos los productos, esta generara la carpeta data y el archivo correspondiente de forma automática, de lo contrario, la aplicación procederá a leerlo y mostrara el contenido del mismo en el resultado del servicio.
+### Recursos:
 
-La carpeta de igual forma sirve como bucket de imágenes para el servicio de subir las mismas que se explicaran en los endpoints routes.
+Los recursos de la aplicación como condición a la persistencia requerida para el proyecto final están basado en su uso mediante una base de datos no relacional usando MongoDB, de esta forma la misma hace uso de dos colecciones para su interacción en la app teniendo la siguiente estructura:
 
-### Endpoints de la API
+>Colección de datos para products (Ver Schema en `src/model/product.model.js`):  
+   ```sh
+   {
+      "_id": "66bb65d02c30c36570abeea0",
+      "name": "Awesome Wooden Shoes",
+      "description": "Principal",
+      "price": 5,
+      "code": 879,
+      "status": true,
+      "stock": 0,
+      "category": "Handcrafted Wooden Table",
+      "thumbnail": "",
+      "createdAt": "2024-08-13T13:55:28.083Z",
+      "updatedAt": "2024-08-13T13:55:28.083Z",
+      "__v": 0,
+      "id": "66bb65d02c30c36570abeea0"
+   }
+   ```
+
+
+>Colección de datos para carts (Ver Schema en `src/model/cart.model.js`):  
+   ```sh
+   {
+      "product": {
+            "_id": "6693261ab04352892ecd1efd",
+            "name": "Licensed Plastic Bacon",
+            "description": "Legacy",
+            "price": 316,
+            "code": 430,
+            "status": true,
+            "stock": 204,
+            "category": "Ergonomic Rubber Tuna",
+            "thumbnail": "",
+            "createdAt": "2024-07-14T01:12:58.496Z",
+            "updatedAt": "2024-07-14T01:12:58.496Z",
+            "__v": 0
+      },
+      "quantity": 1,
+      "_id": "66bbfbc08b531b06d35a2bfd"
+   }
+   ```
 
 > [!IMPORTANT]
-> Los endpoints para productos de CREAR `POST => /api/product`, ACTUALIZAR `PUT => /api/product:id` y BORRAR `DELETE => /api/product/:id` se le agrego en las rutas luego del `try => catch` la condición `finally`; allí es donde se invoca toda la lógica relacionada con websockets requerida por medio de la funcion `socketDataResponse()`, el cual tiene como primer parámetro el nombre del evento emit, el segundo la data a enviar y el tercero el objeto invocado Producto***.
+> En el caso anterior la variable product en el modelo de `cart` solo guarda el id del producto haciendo referencial al mismo en la colección de `products`, es un ejemplo mediante el método populate de `mongoose`, el cual se usa en la aplicación.
 
-> [!NOTE]
-> el método `socketDataResponse()` mencionado anteriormente posee temporalmente `dos` mecánicas de eventos emit para las vistas estáticas `real-time-products => productAdded, productDeleted y productUpdated` y `real-time-products-v2 => listProductUpdated`, estas para ilustrar 2 formas en las que pueden manejarse los eventos en las vistas estáticas.
+### Endpoints de la API
 
 Los endpoints se dividen en tres archivos de rutas, las cuales manejar sus respectivos métodos de consulta: 
 
@@ -95,7 +151,7 @@ Los servicios de la APP responderán  la siguiente estructura:
 Nótese los atributos comunes a la respuesta: `status` indica el código de la respuesta solicitada, `data` para la información generada por la respuesta, en caso de ser una excepción su valor sera `null` y acompañada de un `message` que detalla la información de la respuesta en caso de ser necesaria, de los contrario, su valor sera `null`.
 
 #### Rutas de productos:  
-**GET**  `/api/product`: Obtiene la lista de productos. Puede enviarse como parámetro opcional `limit` para limitar la cantidad en los resultados.  
+**GET**  `/api/product`: Obtiene la lista de productos. Puede enviarse como parámetros opcionales `limit, page, category, status, stock, name, code y sort` todo esto con el fin de poder  hacer un filtrado avanzado en el servicio y posteriormente obtener los resultados.  
 **GET**  `/api/product/:id`: Obtiene un producto con el id requerido por parámetro en ruta.  
 **POST** `/api/product`: Crea un producto con un id autogenerado, requiere los siguientes atributos enviados por el body (ejemplo de variables usadas en Postman para generar valores aleatorios de atributos):  
    ```sh
@@ -123,70 +179,74 @@ Nótese los atributos comunes a la respuesta: `status` indica el código de la r
 **DELETE** `/api/product/:id`: borra el producto requerido
 
 #### Rutas de Carrito de compras:
-**GET**  `/api/cart`: Obtiene la lista de carrito de compras creados.  
+**GET**  `/api/cart`: Obtiene la lista de carrito de compras creados. En este caso se usa el método `populate()` para hidratar el objeto producto, el cual solo esta almacenado el id y hace referencia al id en la colección de `products`  
 **GET**  `/api/cart/:id`: Obtiene un carrito de compras con el id requerido por parámetro en ruta.  
 **POST** `/api/cart`: Genera un carrito de compras con un id secuencial único y lo incluye en la lista de carritos de compras, este es necesario para usar los servicios de  crear y gestionar los productos del mismo.  
 **POST** `/api/cart/:cid/product/:pid`: Este servicio tiene como principal funcion agregar productos a un carrito de compras elegido, el parámetro `:cid` indica el carrito objetivo a ser gestionado, como segundo parámetro `:pid` que representa el id del producto a agregar, este se usa junto con el parámetro  por body `quantity` para verificar si el producto existe en la lista de productos generada y almacenada en `data/products.json` cuenta con la existencia de ese producto y tiene un stock suficiente para ser agregado.
 
-El parámetro `quantity` debe ser enviado de la siguiente manera (ejemplo por Postman): 
+El parámetro `quantity` (opcional) debe ser enviado de la siguiente manera (ejemplo por Postman), en caso de no ser enviado, por default se agrega un `1` solo producto: 
+De igual forma el parámetro `isReduceQuantity` (opcional) es usado para aumentar si esta en `true` y disminuir si esta en `false` la cantidad de productos del carrito,  si no es enviado por default la aplicación lo toma como un true.
+
+> [!IMPORTANT]
+> El parámetro `isReduceQuantity` es sensible y detecta la disponibilidad del stock al producto agregado, si no existe suficiente stock al momento de agregar, o al momento de disminuir mostrara un mensaje de `no hay stock disponible`
+
    ```sh
       {
-         "quantity": 3
+         "quantity": 3 // tipo numero
+         "isReduceQuantity": false, // tipo boolean
       }
    ```
+
 **DELETE** `/api/cart/:cid/product/:pid`: Elimina un producto deseado por medio del id del carrito `:cid` y el id del producto `:pid`  
 **DELETE** `/api/cart/:id`: Elimina un carrito de la lista de carrito de compras por medio del parámetro `:id`  
-**PUT** `/api/cart/:cid/product/:pid`: Reduce la cantidad deseada de un producto ya agregado al carrito de compras por medio del id del producto `:pid`, el id del carrito de compras `:pid`, ademas debe enviarse por parámetro en el body la cantidad deseada a disminuir:  
-   ```sh
-      {
-         "quantity": 3
-      }
-   ```
-#### Rutas subir imágenes:
-**POST** `/api/upload`: servicio para subir imágenes que se almacenan en la ruta `/data/` el cual incluye como titulo el timestamp de la imagen concatenado con su nombre original.
 
 #### Rutas estáticas:
 
 > [!IMPORTANT]
-> Estas rutas son para demostración de renderizado de contenido del lado der servidor para ser servido por frontend
+> Estas rutas son para demostración de renderizado de contenido del lado der servidor para ser servido por frontend, los archivos clave de estas rutas exclusivas se encuentran en el archivo `src/routes/static.router.js` y sus métodos en `src/controllers/static.controller.js` de formas de ser abstraídas o quitadas con facilidad en el momento de no necesitarse mas como forma de hacer el proyecto mas escalable a largo plazo.
 
 > [!NOTE]
-> Cada vista presenta en su mecánica un archivo JS vinculado a su lógica ubicado en la ruta `/public/js`
+> Cada vista presenta en su mecánica un archivo JS vinculado a su lógica ubicado en la ruta `src/public/js`
 
 Son las rutas usadas para renderizar del lado del servidor contenido que pueda ser visualizado y manipulado por el cliente, estas vistas permiten mostrar los productos que son devueltos anteriormente por el endpoint `/api/products` de forma gráfica.
 
 $${\color{green}Rutas \space Estáticas:}$$ 
 
-$${\color{lightgreen}/views/home:}$$
+$${\color{lightgreen}/views/products:}$$
 
-Esta muestra los productos almacenados en el archivo temporal `data/products.json` y los renderiza estaticamente en la vista de mayor `ID` a menor `ID`.
+Esta muestra los productos que son consultados a la base de datos de mongoDB y los muestra sin ningún ordenamiento, de forma paginada y por default como limite de elementos un total de `20`, sin embargo como se muestra en la imagen, existen una serie de filtros avanzados los cuales pueden aplicarse a la consulta como: `stock, status, resultados por pagina(limit), ordenamiento (sort tipo asc y des) en relación a precio, búsqueda por nombre y por código, de igual forma en endpoint esta preparado para buscar por categorías, los cuales no se incluyeron en la demostración de este frontend (revisar colección de postman ubicada en la raíz del proyecto (postman))`.
+
+> [!IMPORTANT]
+> existe 2 botones como acciones principales en cada producto renderizado, uno redirige a la vista de `/views/product-detail/:pid` y el otro realiza la funcionalidad de agregar un producto al carro de compra, cabe destacar que al momento de realizar esta acción se verifica si existe un id de carro de compras almacenado en `localStorage` de no ser asi, este consulta el servicio de generar carro de compras y posteriormente agrega el producto al mismo, en caso contrario de existir el id del carrito, solo es obtenido y usado por la funcion de agregar producto..
+
+Como ultimo acción, se ubica el botón `Ir Al Carrito` el cual lleva a la vista `views/cart`
 
 <p align="center">
-   <image src="external_resources/images/home.jpg" alt="Descripción de la imagen">
+   <image src="external_resources/images/productList.jpg" alt="Descripción de la imagen">
 </p>
 
 La estructura de información mostrada es la misma que la devuelta por el endpoint **GET** `api/product`
 
-$${\color{lightgreen}/views/real-time-products:}$$
+$${\color{lightgreen}/views/product-detail/:id:}$$
 
-Esta vista muestra contenido de los productos de igual manera que la vista anterior, ademas de usar una conexión de websocket que escucha en **tiempo real** las actualizaciones de los endpoints de las api para **Crear, Actualizar y Borrar** productos, ademas cuenta con  diferencias importantes:
+Esta vista muestra a mas detalle mas información procedente del servicio `api/product/:pid` que no es mostrada en la lista anteriormente descrita, de igual manera, se muestra un botón de acción ya que en esta vista es posible de igual manera agregar un producto al carro de compras obteniendo el `cid` de localStorage como de menciono con anterioridad.
 
-- El ordenamiento de la lista esta de mayor ID a menor id, esto por motivos prácticos para ver la actualización de la misma en tiempo real sin necesidad de hacer scroll hasta el ultimo producto de la lista.
-- Presenta botones de acción para crear un producto y borrar un producto, estas acciones se comunican por medio del protocolo **HTTP** a los servicios **PUT** y **POST** de creación y actualización de data.
-- Tiene los eventos en tiempo real por medio de `socket.io` en `socket.on` => `productAdded`, `productDeleted` y `productUpdated` los cuales actualizan dependiendo de la acción realizada, estas con orquestadas en los endpoints **CREAR**, **ACTUALIZAR** y **BORRAR**.
-
-> [!NOTE]
-> Esta vista presenta una mecánica de actualización que si bien es basada en websocket, esta usa un una forma de actualizar o re-renderizar la vista en base a 3 métodos diferentes, ubicados en el archivo `/public/js/realTimeProducts.js` (eficiente en tiempo de renderizado, pero no recomendada)
-
-$${\color{lightgreen}/views/real-time-products-v2:}$$
-
-Esta vista presenta las mismas características que la vista de anterior; a diferencia de la `real-time-products` esta usa un único método para actualizar la información de la lista de los productos por medio del método `socket.on` en el id `listProductUpdated` el cual es invocado por los endpoints de **CREAR**, **ACTUALIZAR** y **BORRAR** producto por medio de un evento `emit`.
-
-> [!NOTE]
-> Esta vista presenta una mecánica de actualización única para las 3 acciones llamada `listProductUpdated` ubicada en `/public/js/realTimeProductsv2.js` (recomendada)
+El botón `Ir Al Carrito` se encuentra disponible en esta vista al igual que en la lista de productos.
 
 <p align="center">
-   <image src="external_resources/images/real-time-products.jpg" alt="Descripción de la imagen">
+   <image src="external_resources/images/productDetail.jpg" alt="Descripción de la imagen">
+</p>
+
+$${\color{lightgreen}/views/cart:}$$
+
+Esta vista muestra los productos agregados al carrito del usuario que actualmente esta usando el equipo, esta vista verifica la existencia de un `id` almacenado en localStorage y desde esa verificación hace la consulta al servicio devolviendo solo el carrito correspondiente a ese id almacenado, en caso de no existir la vista mostrara un texto de `no encontrado`
+
+En la vista existe por producto un botón de `eliminar` el cual elimina el producto elegido del carrito de compras, como dato adicional, en la vista se muestra el total de productos y precio de los mismos previamente agregados.
+
+Como se explico con anterioridad, a modo de  acotación: al momento de agregar un producto es verificado si hay un id almacenado en localStorage como nombre `cart`, de no ser asi es creado por el servicio correspondiente de `generateCart`, en caso de existir es agregado al id recogido desde localStorage.
+
+<p align="center">
+   <image src="external_resources/images/cartProducts.jpg" alt="Descripción de la imagen">
 </p>
 
 $${\color{lightblue}Modal \space Crear \space Producto:}$$
@@ -201,33 +261,31 @@ $${\color{lightblue}Modal \space Eliminar \space Producto:}$$
    <image src="external_resources/images/modal-delete.jpg" alt="Descripción de la imagen">
 </p>
 
-## Websocket
+## Mongodb
 
-La seccion de websocket por medio de la librería `socket.io` fue integrada en conjunto con la funcionalidad de la entrega anterior, de forma que conviven el servidor de NodeJs en conjunto con la mecánica de escucha de los sockets, esta se logro mediante la incorporación de una funcion que orquesta de forma separada el servicio de websockets:
+Existe un archivo en la carpeta `src/config/db.js` el cual tiene la configuración a la conexión a la base de datos:
 
    ```sh
-      const { Server } = require("socket.io");
-
-      let io;
-
-      const webSocketServer = (server) => {
-      io = new Server(server);
-
-      io.on("connection", (socket) => {
-         console.log("client has been connected!");
-
-         socket.on("disconnect", () => {
-            console.log("client has been disconnected!");
-         });
-      });
+      const dbConnect = async () => {
+      try {
+         await mongoose.connect(
+            `${process.env.MONGO_DB_URI}${process.env.DATABASE_NAME}`,
+            {}
+         );
+         console.log("success: connected to database!");
+      } catch (error) {
+         console.error("error:", error.message);
+         process.exit(1);
+      }
       };
 
-      module.exports = { webSocketServer, getIo: () => io };
+      const dbError = db.on("error", (err) => {
+      console.log(err);
+      });
+
+      module.exports = { dbConnect, dbError };
 
    ```
-
-- La variable io se declara fuera de la funcion de forma de que esta pueda ser usada en los eventos de productos `CREAR`, `ACTUALIZAR` y `BORRAR` y es exportada mediante un método llamada `getIo`, se realizo de esta forma ya que al exportar la variable directamente esta era llenada con el valor  `undefined` debido a la naturaleza de la misma.
-- el método `webSocketServer` es el usado en el archivo `app.js` para orquestar la inicializacion del servidor de websocket de forma correcta.
 
 ## Handlebars
 
@@ -247,11 +305,15 @@ En la ruta `/postman` se encuentra la colección de postman necesaria a importar
 ## Estructura del proyecto
 ```
 proyecto/
+├── api/ (carpeta usada solo para el despliegue correcto de la aplicación en Vercel)
 ├── external_resources/ (recursos ajenos a la aplicación)
 │   ├── images/ (imágenes del README.md) 
 │   └──  postman/ (colección de postman)
 ├── src/
-│   ├── data/ (carpeta temporal generada automáticamente al usar los servicios)
+│   ├── config/ (archivo de configuración y conexión a la base de datos)
+│   ├── constants/ (carpeta con variables de constantes generalmente usadas en mostrar mensajes de notificación en los servicios)
+│   ├── controllers/ (carpeta con los métodos y/o funciones necesarias para los servicios)
+│   ├── models/ (carpeta que ubica los modelos (Schema) de datos para las colecciones usadas por medio de mongoose)
 │   ├── public/
 │   │   └── js/ (recursos para paginas de handlebars)
 │   ├── routes/
@@ -260,11 +322,11 @@ proyecto/
 |   ├── views/ (vistas de handlebars)
 │   │   ├── layouts/
 │   │   └── partials/
-│   ├── websockets/
 │   └── app.js
 ├── .gitignore
 ├── package.json
 ├── package-lock.json
+├── server.js
 └── README.md
 ```
 ## Desarrollo
