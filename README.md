@@ -9,6 +9,7 @@ El proyecto se estructuro de forma que pudiera mostrar una modularidad fácilmen
 Proyecto hecho con conexión a una base de datos no-relacional basada en la arquitectura de mongoDB.
 
 ## Tabla de Contenidos
+
 1. [Instalación](#instalación)
 2. [Configuración](#configuración)
 3. [Uso](#uso)
@@ -22,11 +23,14 @@ Proyecto hecho con conexión a una base de datos no-relacional basada en la arqu
 11. [Contactos y Soporte](#contactos-y-soporte)
 
 ## Instalación
+
 ### Requisitos previos
+
 - Node.js v20.16.0
 
 ### Instrucciones de instalación
-   Repositorio publico : https://github.com/amilcar-laniakea/ch-backend-1.git
+
+Repositorio publico : https://github.com/amilcar-laniakea/ch-backend-1.git
 
 1. Clonar el repositorio:
    via HTTP:
@@ -39,6 +43,7 @@ Proyecto hecho con conexión a una base de datos no-relacional basada en la arqu
    ```
 
 ## Configuración
+
 ### Variables de entorno
 
 Las variables de entornos necesarias se encuentran a manera de guía en el archivo `.env.example`:
@@ -48,8 +53,11 @@ Las variables de entornos necesarias se encuentran a manera de guía en el archi
 `DATABASE_NAME`: Nombre de la base de datos en mongoDB
 `APP_URL`: URL de la aplicación, generalmente usado en los archivos para frontend de condición estática: `static`, como se menciono anteriormente en el enunciado del proyecto.
 
+> [!IMPORTANT]
+> Si el puerto de la aplicación definido es el 8080 en la variable PORT, la variable API_URL debe ser http://localhost:8080/
 
 ### Package.json
+
 Contiene las siguientes librerías necesarias para los requerimientos necesarios del trabajo final:
 
 `express`: En su version 4.19.2.  
@@ -61,144 +69,159 @@ Contiene las siguientes librerías necesarias para los requerimientos necesarios
 **Importante:** las versiones descritas con anterioridad fueron o son las usadas al momento de hacer el desarrollo del proyecto.
 
 ## Uso
+
 ### Iniciar Aplicación
-   ```sh
-      npm run start
-   ```
+
+```sh
+   npm run start
+```
+
 Esto iniciara la aplicación en la dirección: [http://localhost:8080](http://localhost:8080/)
 
 ### Recursos:
 
 Los recursos de la aplicación como condición a la persistencia requerida para el proyecto final están basado en su uso mediante una base de datos no relacional usando MongoDB, de esta forma la misma hace uso de dos colecciones para su interacción en la app teniendo la siguiente estructura:
 
->Colección de datos para products (Ver Schema en `src/model/product.model.js`):  
-   ```sh
-   {
-      "_id": "66bb65d02c30c36570abeea0",
-      "name": "Awesome Wooden Shoes",
-      "description": "Principal",
-      "price": 5,
-      "code": 879,
-      "status": true,
-      "stock": 0,
-      "category": "Handcrafted Wooden Table",
-      "thumbnail": "",
-      "createdAt": "2024-08-13T13:55:28.083Z",
-      "updatedAt": "2024-08-13T13:55:28.083Z",
-      "__v": 0,
-      "id": "66bb65d02c30c36570abeea0"
-   }
-   ```
+> Colección de datos para products (Ver Schema en `src/model/product.model.js`):
 
+```sh
+{
+   "_id": "66bb65d02c30c36570abeea0",
+   "name": "Awesome Wooden Shoes",
+   "description": "Principal",
+   "price": 5,
+   "code": 879,
+   "status": true,
+   "stock": 0,
+   "category": "Handcrafted Wooden Table",
+   "thumbnail": "",
+   "createdAt": "2024-08-13T13:55:28.083Z",
+   "updatedAt": "2024-08-13T13:55:28.083Z",
+   "__v": 0,
+   "id": "66bb65d02c30c36570abeea0"
+}
+```
 
->Colección de datos para carts (Ver Schema en `src/model/cart.model.js`):  
-   ```sh
-   {
-      "product": {
-            "_id": "6693261ab04352892ecd1efd",
-            "name": "Licensed Plastic Bacon",
-            "description": "Legacy",
-            "price": 316,
-            "code": 430,
-            "status": true,
-            "stock": 204,
-            "category": "Ergonomic Rubber Tuna",
-            "thumbnail": "",
-            "createdAt": "2024-07-14T01:12:58.496Z",
-            "updatedAt": "2024-07-14T01:12:58.496Z",
-            "__v": 0
-      },
-      "quantity": 1,
-      "_id": "66bbfbc08b531b06d35a2bfd"
-   }
-   ```
+> Colección de datos para carts (Ver Schema en `src/model/cart.model.js`):
+
+```sh
+{
+   "product": {
+         "_id": "6693261ab04352892ecd1efd",
+         "name": "Licensed Plastic Bacon",
+         "description": "Legacy",
+         "price": 316,
+         "code": 430,
+         "status": true,
+         "stock": 204,
+         "category": "Ergonomic Rubber Tuna",
+         "thumbnail": "",
+         "createdAt": "2024-07-14T01:12:58.496Z",
+         "updatedAt": "2024-07-14T01:12:58.496Z",
+         "__v": 0
+   },
+   "quantity": 1,
+   "_id": "66bbfbc08b531b06d35a2bfd"
+}
+```
 
 > [!IMPORTANT]
 > En el caso anterior la variable product en el modelo de `cart` solo guarda el id del producto haciendo referencial al mismo en la colección de `products`, es un ejemplo mediante el método populate de `mongoose`, el cual se usa en la aplicación.
 
 ### Endpoints de la API
 
-Los endpoints se dividen en tres archivos de rutas, las cuales manejar sus respectivos métodos de consulta: 
+Los endpoints se dividen en tres archivos de rutas, las cuales manejar sus respectivos métodos de consulta:
 
-Los servicios de la APP responderán  la siguiente estructura:
->Ejemplo de respuesta exitosa:  
-   ```sh
-      {
-         "status": 200,
-         "data": {
-            "title": "Practical Steel Shirt",
-            "description": "Corporate",
-            "code": 338,
-            "price": 144,
-            "status": true,
-            "stock": 942,
-            "category": "Licensed Steel Shirt",
-            "thumbnail": "",
-            "id": 5
-         },
-         "message": "Product with requested ID 5: updated successfully."
-      }
-   ```
->Ejemplo de respuesta en excepción o error: 
-   ```sh
-      {
-         "status": 200,
-         "data": null,
-         "message": "Product with requested ID 15: not found"
-      }
-   ```
+Los servicios de la APP responderán la siguiente estructura:
+
+> Ejemplo de respuesta exitosa:
+
+```sh
+   {
+      "status": 200,
+      "data": {
+         "title": "Practical Steel Shirt",
+         "description": "Corporate",
+         "code": 338,
+         "price": 144,
+         "status": true,
+         "stock": 942,
+         "category": "Licensed Steel Shirt",
+         "thumbnail": "",
+         "id": 5
+      },
+      "message": "Product with requested ID 5: updated successfully."
+   }
+```
+
+> Ejemplo de respuesta en excepción o error:
+
+```sh
+   {
+      "status": 200,
+      "data": null,
+      "message": "Product with requested ID 15: not found"
+   }
+```
 
 Nótese los atributos comunes a la respuesta: `status` indica el código de la respuesta solicitada, `data` para la información generada por la respuesta, en caso de ser una excepción su valor sera `null` y acompañada de un `message` que detalla la información de la respuesta en caso de ser necesaria, de los contrario, su valor sera `null`.
 
-#### Rutas de productos:  
-**GET**  `/api/product`: Obtiene la lista de productos. Puede enviarse como parámetros opcionales `limit, page, category, status, stock, name, code y sort` todo esto con el fin de poder  hacer un filtrado avanzado en el servicio y posteriormente obtener los resultados.  
-**GET**  `/api/product/:id`: Obtiene un producto con el id requerido por parámetro en ruta.  
-**POST** `/api/product`: Crea un producto con un id autogenerado, requiere los siguientes atributos enviados por el body (ejemplo de variables usadas en Postman para generar valores aleatorios de atributos):  
-   ```sh
-      {
-         "title": "{{$randomProductName}}",
-         "description": "{{$randomJobDescriptor}}",
-         "category": "{{$randomProductName}}",
-         "code": {{$randomInt}},
-         "price": {{$randomInt}},
-         "stock": {{$randomInt}}
-      }
-   ```
+#### Rutas de productos:
+
+**GET** `/api/product`: Obtiene la lista de productos. Puede enviarse como parámetros opcionales `limit, page, category, status, stock, name, code y sort` todo esto con el fin de poder hacer un filtrado avanzado en el servicio y posteriormente obtener los resultados.  
+**GET** `/api/product/:id`: Obtiene un producto con el id requerido por parámetro en ruta.  
+**POST** `/api/product`: Crea un producto con un id autogenerado, requiere los siguientes atributos enviados por el body (ejemplo de variables usadas en Postman para generar valores aleatorios de atributos):
+
+```sh
+   {
+      "title": "{{$randomProductName}}",
+      "description": "{{$randomJobDescriptor}}",
+      "category": "{{$randomProductName}}",
+      "code": {{$randomInt}},
+      "price": {{$randomInt}},
+      "stock": {{$randomInt}}
+   }
+```
+
 **PUT** `/api/product/:id`: actualiza el producto requerido, pueden enviarse los mismos parámetros que en el ejemplo de crear un producto, sin embargo, son de manera opcional, y pueden editarse uno por individual por request o todos a la vez, ejemplos:
-   ```sh
-      {
-         "title": "{{$randomProductName}}",
-      }
-   ```
-   ```sh
-      {
-         "title": "{{$randomProductName}}",
-         "description": "{{$randomJobDescriptor}}",
-      }
-   ```
+
+```sh
+   {
+      "title": "{{$randomProductName}}",
+   }
+```
+
+```sh
+   {
+      "title": "{{$randomProductName}}",
+      "description": "{{$randomJobDescriptor}}",
+   }
+```
+
 **DELETE** `/api/product/:id`: borra el producto requerido
 
 #### Rutas de Carrito de compras:
-**GET**  `/api/cart`: Obtiene la lista de carrito de compras creados. En este caso se usa el método `populate()` para hidratar el objeto producto, el cual solo esta almacenado el id y hace referencia al id en la colección de `products`  
-**GET**  `/api/cart/:id`: Obtiene un carrito de compras con el id requerido por parámetro en ruta.  
-**POST** `/api/cart`: Genera un carrito de compras con un id secuencial único y lo incluye en la lista de carritos de compras, este es necesario para usar los servicios de  crear y gestionar los productos del mismo.  
-**POST** `/api/cart/:cid/product/:pid`: Este servicio tiene como principal funcion agregar productos a un carrito de compras elegido, el parámetro `:cid` indica el carrito objetivo a ser gestionado, como segundo parámetro `:pid` que representa el id del producto a agregar, este se usa junto con el parámetro  por body `quantity` para verificar si el producto existe en la lista de productos generada y almacenada en `data/products.json` cuenta con la existencia de ese producto y tiene un stock suficiente para ser agregado.
 
-El parámetro `quantity` (opcional) debe ser enviado de la siguiente manera (ejemplo por Postman), en caso de no ser enviado, por default se agrega un `1` solo producto: 
-De igual forma el parámetro `isReduceQuantity` (opcional) es usado para aumentar si esta en `true` y disminuir si esta en `false` la cantidad de productos del carrito,  si no es enviado por default la aplicación lo toma como un true.
+**GET** `/api/cart`: Obtiene la lista de carrito de compras creados. En este caso se usa el método `populate()` para hidratar el objeto producto, el cual solo esta almacenado el id y hace referencia al id en la colección de `products`  
+**GET** `/api/cart/:id`: Obtiene un carrito de compras con el id requerido por parámetro en ruta.  
+**POST** `/api/cart`: Genera un carrito de compras con un id secuencial único y lo incluye en la lista de carritos de compras, este es necesario para usar los servicios de crear y gestionar los productos del mismo.  
+**POST** `/api/cart/:cid/product/:pid`: Este servicio tiene como principal funcion agregar productos a un carrito de compras elegido, el parámetro `:cid` indica el carrito objetivo a ser gestionado, como segundo parámetro `:pid` que representa el id del producto a agregar, este se usa junto con el parámetro por body `quantity` para verificar si el producto existe en la lista de productos generada y almacenada en `data/products.json` cuenta con la existencia de ese producto y tiene un stock suficiente para ser agregado.
+
+El parámetro `quantity` (opcional) debe ser enviado de la siguiente manera (ejemplo por Postman), en caso de no ser enviado, por default se agrega un `1` solo producto:
+De igual forma el parámetro `isReduceQuantity` (opcional) es usado para aumentar si esta en `true` y disminuir si esta en `false` la cantidad de productos del carrito, si no es enviado por default la aplicación lo toma como un true.
 
 > [!IMPORTANT]
 > El parámetro `isReduceQuantity` es sensible y detecta la disponibilidad del stock al producto agregado, si no existe suficiente stock al momento de agregar, o al momento de disminuir mostrara un mensaje de `no hay stock disponible`
 
-   ```sh
-      {
-         "quantity": 3 // tipo numero
-         "isReduceQuantity": false, // tipo boolean
-      }
-   ```
+```sh
+   {
+      "quantity": 3 // tipo numero
+      "isReduceQuantity": false, // tipo boolean
+   }
+```
 
 **DELETE** `/api/cart/:cid/product/:pid`: Elimina un producto deseado por medio del id del carrito `:cid` y el id del producto `:pid`  
-**DELETE** `/api/cart/:id`: Elimina un carrito de la lista de carrito de compras por medio del parámetro `:id`  
+**DELETE** `/api/cart/:id`: Elimina un carrito de la lista de carrito de compras por medio del parámetro `:id`
 
 #### Rutas estáticas:
 
@@ -210,7 +233,7 @@ De igual forma el parámetro `isReduceQuantity` (opcional) es usado para aumenta
 
 Son las rutas usadas para renderizar del lado del servidor contenido que pueda ser visualizado y manipulado por el cliente, estas vistas permiten mostrar los productos que son devueltos anteriormente por el endpoint `/api/products` de forma gráfica.
 
-$${\color{green}Rutas \space Estáticas:}$$ 
+$${\color{green}Rutas \space Estáticas:}$$
 
 $${\color{lightgreen}/views/products:}$$
 
@@ -243,7 +266,7 @@ Esta vista muestra los productos agregados al carrito del usuario que actualment
 
 En la vista existe por producto un botón de `eliminar` el cual elimina el producto elegido del carrito de compras, como dato adicional, en la vista se muestra el total de productos y precio de los mismos previamente agregados.
 
-Como se explico con anterioridad, a modo de  acotación: al momento de agregar un producto es verificado si hay un id almacenado en localStorage como nombre `cart`, de no ser asi es creado por el servicio correspondiente de `generateCart`, en caso de existir es agregado al id recogido desde localStorage.
+Como se explico con anterioridad, a modo de acotación: al momento de agregar un producto es verificado si hay un id almacenado en localStorage como nombre `cart`, de no ser asi es creado por el servicio correspondiente de `generateCart`, en caso de existir es agregado al id recogido desde localStorage.
 
 <p align="center">
    <image src="external_resources/images/cartProducts.jpg" alt="Descripción de la imagen">
@@ -253,27 +276,27 @@ Como se explico con anterioridad, a modo de  acotación: al momento de agregar u
 
 Existe un archivo en la carpeta `src/config/db.js` el cual tiene la configuración a la conexión a la base de datos:
 
-   ```sh
-      const dbConnect = async () => {
-      try {
-         await mongoose.connect(
-            `${process.env.MONGO_DB_URI}${process.env.DATABASE_NAME}`,
-            {}
-         );
-         console.log("success: connected to database!");
-      } catch (error) {
-         console.error("error:", error.message);
-         process.exit(1);
-      }
-      };
+```sh
+   const dbConnect = async () => {
+   try {
+      await mongoose.connect(
+         `${process.env.MONGO_DB_URI}${process.env.DATABASE_NAME}`,
+         {}
+      );
+      console.log("success: connected to database!");
+   } catch (error) {
+      console.error("error:", error.message);
+      process.exit(1);
+   }
+   };
 
-      const dbError = db.on("error", (err) => {
-      console.log(err);
-      });
+   const dbError = db.on("error", (err) => {
+   console.log(err);
+   });
 
-      module.exports = { dbConnect, dbError };
+   module.exports = { dbConnect, dbError };
 
-   ```
+```
 
 ## Handlebars
 
@@ -281,21 +304,23 @@ La carpeta `views` contiene toda la estructura del proyecto en lo referente a la
 
 - Cada plantilla tiene sus dependencias que son invocadas por medios de CDN's
 - Cada plantilla su archivo `.js` ubicado en la ruta `/src/public/js` que contienen la lógica necesaria para su funcionamiento
-- La configuración de la librería `handlebars` se encuentra ubicada en el archivo `app.js`, donde están declaradas la ubicación de la carpeta `partials` detalles como extension personalizada: 
+- La configuración de la librería `handlebars` se encuentra ubicada en el archivo `app.js`, donde están declaradas la ubicación de la carpeta `partials` detalles como extension personalizada:
 
-   ```sh
-      const hbs = create({ extname: "hbs", partialsDir: path.join(__dirname, "views", "partials")});
-   ```
+  ```sh
+     const hbs = create({ extname: "hbs", partialsDir: path.join(__dirname, "views", "partials")});
+  ```
 
 ## Postman
+
 En la ruta `/postman` se encuentra la colección de postman necesaria a importar en la aplicación de `Postman` y usar los recursos de la APP, el nombre del archivo es `collection_v1.json`
- 
+
 ## Estructura del proyecto
+
 ```
 proyecto/
 ├── api/ (carpeta usada solo para el despliegue correcto de la aplicación en Vercel)
 ├── external_resources/ (recursos ajenos a la aplicación)
-│   ├── images/ (imágenes del README.md) 
+│   ├── images/ (imágenes del README.md)
 │   └──  postman/ (colección de postman)
 ├── src/
 │   ├── config/ (archivo de configuración y conexión a la base de datos)
@@ -317,22 +342,34 @@ proyecto/
 ├── server.js
 └── README.md
 ```
+
 ## Desarrollo
+
 ### Guías de estilo
+
 No disponible
 
 ### Procedimientos de desarrollo
+
 1. Crea una rama nueva: `git checkout -b feature/nueva-feature`
 1. Realiza tus cambios y realiza commits.
 
 ### Código de conducta
+
 Este proyecto sigue el Código de Conducta.
+
 ## Licencia
+
 Este proyecto está bajo la licencia MIT. Ver el archivo LICENSE para más detalles.
+
 ## Autores y reconocimientos
-* Amilcar Barahona - Desarrollador principal - amilcar-laniakea
+
+- Amilcar Barahona - Desarrollador principal - amilcar-laniakea
+
 ## Contacto y soporte
+
 Para preguntas o soporte, contacta a amilcar.laniakea@gmail.com.
 
 ### Notas Adicionales
+
 Cualquier otra información relevante.
