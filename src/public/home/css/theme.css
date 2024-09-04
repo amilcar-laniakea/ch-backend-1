@@ -12149,6 +12149,7 @@ a.text-link:hover {
   position: absolute;
   left: 15px;
   top: 0.5rem;
+  height: 41px;
 }
 .docs-logo-wrapper .site-logo {
   display: inline-block;

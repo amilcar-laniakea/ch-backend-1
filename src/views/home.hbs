@@ -27,7 +27,7 @@
     <header class="header fixed-top">
       <div class="branding docs-branding">
         <div class="container-fluid position-relative py-2">
-          <div class="docs-logo-wrapper">
+          <div class="docs-logo-wrapper d-flex">
             <button
               id="docs-sidebar-toggler"
               class="docs-sidebar-toggler docs-sidebar-visible me-2 d-xl-none"
@@ -37,9 +37,9 @@
               <span></span>
               <span></span>
             </button>
-            <div class="site-logo">
+            <div class="site-logo d-none d-lg-block">
               <a class="navbar-brand" href="/">
-                <span class="logo-text">API Documentación
+                <span class="logo-text">API Docs
                   <span class="text-alt">by Amilcar</span>
                 </span>
               </a>
@@ -48,13 +48,20 @@
           <div
             class="docs-top-utilities d-flex justify-content-end align-items-center"
           >
-            <ul
-              class="social-list list-inline mx-md-3 mx-lg-5 mb-0 d-none d-lg-flex"
-            >
-            </ul>
+            <a href="/views/products" class="btn btn-primary d-lg-flex"><span
+                class="d-none d-md-block"
+              >Ir a Productos</span><i
+                class="fa-solid fa-sitemap d-flex d-md-none"
+              ></i></a>
+            <a href="/views/cart" class="btn btn-primary d-lg-flex ms-3"><span
+                class="d-none d-md-block"
+              >Ir a Carrito</span><i
+                class="fa-solid fa-cart-shopping d-flex d-md-none"
+              ></i></a>
+
             <a
               href="https://porfolio.amilcarcode.app/"
-              class="btn btn-primary d-none d-lg-flex"
+              class="btn btn-secondary d-lg-flex ms-3"
             >Porfolio</a>
           </div>
         </div>
