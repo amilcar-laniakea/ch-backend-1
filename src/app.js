@@ -7,12 +7,16 @@ const db = require("./config/db.js");
 const productsRouter = require("./routes/product.router.js");
 const cartsRouter = require("./routes/cart.router.js");
 const staticRouter = require("./routes/static.router.js");
+const homeRouter = require("./routes/home.router.js");
 
 const app = express();
 const hbs = create({
   extname: "hbs",
   partialsDir: path.join(__dirname, "views", "partials"),
 });
+
+app.use("/", homeRouter); // for landing page; i located it for priorice render on route above static public folder
+
 app.use(express.static(path.join(__dirname, "public")));
 
 db.dbConnect();

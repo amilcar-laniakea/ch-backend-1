@@ -51,10 +51,6 @@ Las variables de entornos necesarias se encuentran a manera de guía en el archi
 `PORT`: El puerto se encuentra definido por default en el archivo principal del proyecto (app.js): 8080
 `MONGO_DB_URI`: La dirección en donde se encuentra la base de datos de mongoDB
 `DATABASE_NAME`: Nombre de la base de datos en mongoDB
-`APP_URL`: URL de la aplicación, generalmente usado en los archivos para frontend de condición estática: `static`, como se menciono anteriormente en el enunciado del proyecto.
-
-> [!IMPORTANT]
-> Si el puerto de la aplicación definido es el 8080 en la variable PORT, la variable API_URL debe ser http://localhost:8080/
 
 ### Package.json
 
@@ -240,12 +236,12 @@ $${\color{lightgreen}/views/products:}$$
 Esta muestra los productos que son consultados a la base de datos de mongoDB y los muestra sin ningún ordenamiento, de forma paginada y por default como limite de elementos un total de `20`, sin embargo como se muestra en la imagen, existen una serie de filtros avanzados los cuales pueden aplicarse a la consulta como: `stock, status, resultados por pagina(limit), ordenamiento (sort tipo asc y des) en relación a precio, búsqueda por nombre y por código, de igual forma en endpoint esta preparado para buscar por categorías, los cuales no se incluyeron en la demostración de este frontend (revisar colección de postman ubicada en la raíz del proyecto (postman))`.
 
 > [!IMPORTANT]
-> existe 2 botones como acciones principales en cada producto renderizado, uno redirige a la vista de `/views/product-detail/:pid` y el otro realiza la funcionalidad de agregar un producto al carro de compra, cabe destacar que al momento de realizar esta acción se verifica si existe un id de carro de compras almacenado en `localStorage` de no ser asi, este consulta el servicio de generar carro de compras y posteriormente agrega el producto al mismo, en caso contrario de existir el id del carrito, solo es obtenido y usado por la funcion de agregar producto..
+> Existen 2 botones como acciones principales en cada producto renderizado, uno redirige a la vista de `/views/product-detail/:pid` y el otro realiza la funcionalidad de agregar un producto al carro de compra, cabe destacar que al momento de realizar esta acción se verifica si existe un id de carro de compras almacenado en `localStorage` de no ser asi, este consulta el servicio de generar carro de compras y posteriormente agrega el producto al mismo, en caso contrario de existir el id del carrito, solo es obtenido y usado por la funcion de agregar producto..
 
 Como ultimo acción, se ubica el botón `Ir Al Carrito` el cual lleva a la vista `views/cart`
 
 <p align="center">
-   <image src="external_resources/images/productList.jpg" alt="Descripción de la imagen">
+   <image src="src/public/home/images/productList.jpg" alt="Descripción de la imagen">
 </p>
 
 La estructura de información mostrada es la misma que la devuelta por el endpoint **GET** `api/product`
@@ -257,7 +253,7 @@ Esta vista muestra a mas detalle mas información procedente del servicio `api/p
 El botón `Ir Al Carrito` se encuentra disponible en esta vista al igual que en la lista de productos.
 
 <p align="center">
-   <image src="external_resources/images/productDetail.jpg" alt="Descripción de la imagen">
+   <image src="src/public/home/images/productDetail.jpg" alt="Descripción de la imagen">
 </p>
 
 $${\color{lightgreen}/views/cart:}$$
@@ -269,7 +265,7 @@ En la vista existe por producto un botón de `eliminar` el cual elimina el produ
 Como se explico con anterioridad, a modo de acotación: al momento de agregar un producto es verificado si hay un id almacenado en localStorage como nombre `cart`, de no ser asi es creado por el servicio correspondiente de `generateCart`, en caso de existir es agregado al id recogido desde localStorage.
 
 <p align="center">
-   <image src="external_resources/images/cartProducts.jpg" alt="Descripción de la imagen">
+   <image src="src/public/home/images/cartProducts.jpg" alt="Descripción de la imagen">
 </p>
 
 ## Mongodb

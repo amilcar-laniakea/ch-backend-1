@@ -1,9 +1,6 @@
 # App libraries
 node_modules
 
-# VSCode fles
-.vscode
-
 # App files
 api/data/
 
@@ -11,4 +8,5 @@ api/data/
 .vercel
 
 # .env file
-.env
+*.env
+*.env.local

@@ -1,4 +1,7 @@
-const { getAllProducts, getProductById } = require("../services/product.service.js");
+const {
+  getAllProducts,
+  getProductById,
+} = require("../services/product.service.js");
 const { getCartById } = require("../services/cart.service.js");
 
 class ProductStaticController {
@@ -7,6 +10,8 @@ class ProductStaticController {
   }
 
   async renderProducts(req, res) {
+    const baseUrl = req.protocol + "://" + req.get("host");
+
     let result = {};
 
     try {
@@ -31,10 +36,10 @@ class ProductStaticController {
       );
 
       this.products.prevLink = this.products.hasPrevPage
-        ? `${process.env.APP_URL}views/products?page=${this.products.prevPage}&name=${name}&code=${code}&code=${code}&stock=${stock}&status=${status}&category=${category}&limit=${limit}&sort=${sort}`
+        ? `${baseUrl}/views/products?page=${this.products.prevPage}&name=${name}&code=${code}&code=${code}&stock=${stock}&status=${status}&category=${category}&limit=${limit}&sort=${sort}`
         : "";
       this.products.nextLink = this.products.hasNextPage
-        ? `${process.env.APP_URL}views/products?page=${this.products.nextPage}&name=${name}&code=${code}&code=${code}&stock=${stock}&status=${status}&category=${category}&limit=${limit}&sort=${sort}`
+        ? `${baseUrl}/views/products?page=${this.products.nextPage}&name=${name}&code=${code}&code=${code}&stock=${stock}&status=${status}&category=${category}&limit=${limit}&sort=${sort}`
         : "";
       this.products.isValid = !(page <= 0 || page > this.products.totalPages);
 
@@ -60,8 +65,8 @@ class ProductStaticController {
       const product = await getProductById(id);
 
       result = { ...product._doc, isValid: true };
-
-    } catch {} finally {
+    } catch {
+    } finally {
       res.render("detailProduct", result);
     }
   }
@@ -73,12 +78,14 @@ class ProductStaticController {
       const id = req.query.id;
 
       result = await getCartById(id, true);
-
-       console.log('result', result);
-
-    } catch {} finally {
+    } catch {
+    } finally {
       res.render("cart", result);
     }
+  }
+
+  async renderHome(req, res) {
+    res.render("home");
   }
 }
 
