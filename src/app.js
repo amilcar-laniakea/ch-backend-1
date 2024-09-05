@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 const { create } = require("express-handlebars");
+const swaggerDocs = require("./utils/swagger/index.js");
 
 const db = require("./config/db.js");
 
@@ -9,13 +10,15 @@ const cartsRouter = require("./routes/cart.router.js");
 const staticRouter = require("./routes/static.router.js");
 const homeRouter = require("./routes/home.router.js");
 
+const PORT = process.env.PORT || 8080;
+
 const app = express();
 const hbs = create({
   extname: "hbs",
   partialsDir: path.join(__dirname, "views", "partials"),
 });
 
-app.use("/", homeRouter); // for landing page; i located it for priorice render on route above static public folder
+app.use("/", homeRouter);
 
 app.use(express.static(path.join(__dirname, "public")));
 
@@ -33,4 +36,6 @@ app.use("/api/product", productsRouter);
 app.use("/api/cart", cartsRouter);
 app.use("/views", staticRouter);
 
-module.exports = app;
+swaggerDocs(app, PORT);
+
+module.exports = { app, PORT };

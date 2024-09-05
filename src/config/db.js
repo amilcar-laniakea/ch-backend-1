@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const log = require("../utils/logger");
 
 const db = mongoose.connection;
 
@@ -8,15 +9,15 @@ const dbConnect = async () => {
       `${process.env.MONGO_DB_URI}${process.env.DATABASE_NAME}`,
       {}
     );
-    console.log("success: connected to database!");
+    log.info("success: connected to database!");
   } catch (error) {
-    console.error("error:", error.message);
+    log.error(error.message);
     process.exit(1);
   }
 };
 
 const dbError = db.on("error", (err) => {
-  console.log(err);
+  log.error(err);
 });
 
 module.exports = { dbConnect, dbError };

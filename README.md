@@ -57,7 +57,6 @@ Las variables de entornos necesarias se encuentran a manera de guía en el archi
 Contiene las siguientes librerías necesarias para los requerimientos necesarios del trabajo final:
 
 `express`: En su version 4.19.2.  
-`multer`: En su version 1.4.5.  
 `express-handlebars`: En su version 7.1.3  
 `mongoose`: En su version ^8.5.1,
 `mongoose-paginate-v2`: En su version ^1.8.3,
