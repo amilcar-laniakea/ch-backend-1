@@ -12,6 +12,7 @@
     "extname",
     "fieldname",
     "fontawesome",
+    "hljs",
     "inicializacion",
     "laniakea",
     "lightbox",
@@ -25,6 +26,7 @@
     "renderizar",
     "scrollto",
     "simplelightbox",
+    "smoothscroll",
     "Swal",
     "websockets"
   ]

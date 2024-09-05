@@ -48,6 +48,7 @@ Repositorio publico : https://github.com/amilcar-laniakea/ch-backend-1.git
 
 Las variables de entornos necesarias se encuentran a manera de guía en el archivo `.env.example`:
 
+`NODE_ENV`: Variable que indica el tipo de deployment realizado
 `PORT`: El puerto se encuentra definido por default en el archivo principal del proyecto (app.js): 8080
 `MONGO_DB_URI`: La dirección en donde se encuentra la base de datos de mongoDB
 `DATABASE_NAME`: Nombre de la base de datos en mongoDB

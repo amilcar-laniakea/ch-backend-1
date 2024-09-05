@@ -8,6 +8,14 @@ const path = require("path");
 const definitionPath = path.resolve(__dirname, "./definition.yaml");
 const definition = yaml.load(fs.readFileSync(definitionPath, "utf8"));
 
+if (process.env.NODE_ENV === "production") {
+  definition.servers = [
+    { url: "https://backend-final-project.amilcarcode.app" },
+  ];
+} else {
+  definition.servers = [{ url: "http://localhost:8080" }];
+}
+
 const options = {
   definition,
   apis: ["./src/product.router.js", "./src/cart.router.js"],
@@ -16,7 +24,7 @@ const options = {
 const swaggerSpec = swaggerJsdoc(options);
 
 function swaggerDocs(app, port) {
-  app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   app.get("/docs.json", (req, res) => {
     res.setHeader("Content-Type", "application/json");

@@ -83,6 +83,11 @@
                 Acerca de
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link scrollto" href="#swagger-ref">
+                <strong>Documentación en Swagger</strong>
+              </a>
+            </li>
             <li class="nav-item section-title mt-3">
               <a class="nav-link scrollto" href="#section-2">
                 <span class="theme-icon-holder me-2">
@@ -201,14 +206,14 @@
           <article class="docs-article" id="section-1">
             <header class="docs-header">
               <h1 class="docs-heading">Inicio
-                <span class="docs-time">Ultima Actualización: 03/09/2024</span></h1>
+                <span class="docs-time">Ultima Actualización: 04/09/2024</span></h1>
               <section class="docs-intro">
                 <p>Proyecto final de la primera parte del curso avanzado de
                   backend en coderhouse.
                 </p>
               </section>
 
-              <section class="about-intro" id="about-ref">
+              <section class="docs-section" id="about-ref">
                 <h1 class="docs-heading">Acerca de</h1>
                 <p>El proyecto se estructuro de forma que pudiera mostrar una
                   modularidad fácilmente escalable a un proyecto que solo
@@ -227,39 +232,39 @@
                   basada en la arquitectura de mongoDB.
                 </p>
               </section>
+              <section class="docs-section" id="swagger-ref">
+                <h1 class="docs-heading">Documentación en Swagger</h1>
+                <p>La aplicación cuenta con una seccion en donde se pueden
+                  verificar cada unos de los servicios asi como sus
+                  correspondientes características de consulta en la ruta
+                  <strong><code>/api-docs</code></strong>
+                </p>
+                <p>Actualmente cuentan con solo 2 servicios agregados de
+                  productos
+                  <strong><code>get:api/product</code></strong>y
+                  <strong><code>get:api/product:id</code></strong>. Se irán
+                  agregando de manera progresiva los demás restantes.
+                </p>
+                <div
+                  style="width:100%; display:flex;justify-content:center;margin-bottom:20px"
+                >
+                  <a
+                    href="/api-docs"
+                    class="btn btn-primary d-lg-flex w-100 justify-content-center"
+                    style="max-width: 200px"
+                  ><span>Ir a Swagger Docs</span></a>
+                </div>
+                <p align="center">
+                  <img
+                    src="/home/images/swagger.jpg"
+                    alt="Swagger Docs"
+                    style="width:100%"
+                  />
+                </p>
+              </section>
             </header>
 
             <section class="docs-section" id="item-1-1">
-              <h2 class="section-heading">Clonación del Repositorio</h2>
-              <p>Node.js v20.16.0</p>
-
-              <p>Repositorio publico :
-                https://github.com/amilcar-laniakea/ch-backend-1.git
-              </p>
-
-              <p>Clonar el repositorio:</p>
-
-              <div class="docs-code-block">
-                <pre class="shadow-lg rounded">
-                  <code class="json hljs">
-                    <span class="hljs-string">
-                      git-clone-https://github.com/amilcar-laniakea/ch-backend-final-proyect.git
-                    </span>
-                  </code>
-                </pre>
-              </div>
-
-              <p>Via SSH:</p>
-
-              <div class="docs-code-block">
-                <pre class="shadow-lg rounded">
-                  <code class="json hljs">
-                    <span class="hljs-string">
-                      git@github.com:amilcar-laniakea/ch-backend-1.git
-                    </span>
-                  </code>
-                </pre>
-              </div>
             </section>
           </article>
 
@@ -267,13 +272,13 @@
             <header class="docs-header">
               <h1 class="docs-heading">Primeros Pasos</h1>
               <section class="docs-intro">
-                <p>Esta session esta dedicada a mostrar la configuracion basica
+                <p>Esta session esta dedicada a mostrar la configuración básica
                   del proyecto, mostrando como establecer las variables de
                   entorno y como iniciar el proyecto.</p>
               </section>
             </header>
             <section class="docs-section" id="item-2-1">
-              <h2 class="section-heading">Clonacion del Repositorio</h2>
+              <h2 class="section-heading">Clonación del Repositorio</h2>
               <p>Node.js v20.16.0</p>
 
               <p>Repositorio publico :
@@ -306,9 +311,11 @@
             </section>
 
             <section class="docs-section" id="item-2-2">
-              <h2 class="section-heading">Configuracion</h2>
+              <h2 class="section-heading">Configuración</h2>
               <h5 class="pt-3">Variables de Entorno</h5>
               <ul>
+                <li><strong class="me-1">NODE_ENV:</strong>
+                  <code>Variable que indica el tipo de deployment</code></li>
                 <li><strong class="me-1">PORT:</strong>
                   <code>El puerto se encuentra definido por default en el
                     archivo principal del proyecto (app.js): 8080</code></li>
@@ -321,7 +328,7 @@
             </section>
 
             <section class="docs-section" id="item-2-3">
-              <h2 class="section-heading">Instalacion</h2>
+              <h2 class="section-heading">Instalación</h2>
               <h5 class="pt-3">Comandos de Instalación:</h5>
               <p>npm: <code>npm install</code></p>
               <p>pnpm: <code>npm install</code></p>
@@ -602,7 +609,7 @@
             </section>
 
             <section class="docs-section" id="item-4-3">
-              <h2 class="section-heading">Rutas Estaticas</h2>
+              <h2 class="section-heading">Rutas Estáticas</h2>
               <div class="callout-block callout-block-info">
                 <div class="content">
                   <h4 class="callout-title">
@@ -649,7 +656,7 @@
 
           <article class="docs-article" id="section-5">
             <header class="docs-header">
-              <h1 class="docs-heading">Estructura de Rutas Estaticas</h1>
+              <h1 class="docs-heading">Estructura de Rutas Estáticas</h1>
               <section class="docs-intro">
               </section>
             </header>
@@ -777,7 +784,7 @@
               </section>
             </header>
             <section class="docs-section" id="item-6-1">
-              <h2 class="section-heading">Conexion</h2>
+              <h2 class="section-heading">Conexión</h2>
               <div class="docs-code-block">
                 <script
                   src="https://gist.github.com/amilcar-laniakea/6d06c5f1e7fa8fb3a6cd7d639b5fb511.js"
