@@ -9,7 +9,7 @@ const definitionPath = path.resolve(__dirname, "./definition.yaml");
 const definition = yaml.load(fs.readFileSync(definitionPath, "utf8"));
 
 const CSS_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.6.0/swagger-ui.min.css";
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
 
 if (process.env.NODE_ENV === "production") {
   definition.servers = [
